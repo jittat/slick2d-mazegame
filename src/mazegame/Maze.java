@@ -27,10 +27,13 @@ public class Maze {
   public Maze() {
     topY = (MazeGame.GAME_HEIGHT - ROWS*BLOCK_SIZE)/2;
     leftX = (MazeGame.GAME_WIDTH - COLS*BLOCK_SIZE)/2;
+  }
+  
+  public void init() {
     try {
       wallImage = new Image("res/wall.png");
     } catch (SlickException e) {
-      e.printStackTrace();
+      wallImage = null;
     }
   }
 
@@ -51,5 +54,10 @@ public class Maze {
 
   public int getCellCenterY(int r, int c) {
     return topY + r * BLOCK_SIZE + BLOCK_SIZE/2;    
+  }
+
+  public boolean isAtCellCenter(int x, int y) {
+    return ((x - leftX) % BLOCK_SIZE == BLOCK_SIZE/2) &&
+        ((y - topY) % BLOCK_SIZE == BLOCK_SIZE/2);
   }
 }
