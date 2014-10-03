@@ -11,6 +11,8 @@ public class MazeGame extends BasicGame {
   public static final int GAME_WIDTH = 640;
   public static final int GAME_HEIGHT = 480;
   private Maze maze;
+  private Pacman pacman;
+  private Renderable pacmanImage;
   
   public MazeGame(String title) {
     super(title);
@@ -19,11 +21,16 @@ public class MazeGame extends BasicGame {
   @Override
   public void init(GameContainer container) throws SlickException {
     maze = new Maze();
+    pacman = new Pacman(maze.getCellCenterX(1, 1),
+        maze.getCellCenterY(1, 1),
+        Pacman.Direction.STILL);
+    pacmanImage = pacman.getRenderable();
   }
 
   @Override
   public void render(GameContainer container, Graphics g) throws SlickException {
     maze.render();
+    pacmanImage.render(g);
   }
 
   @Override

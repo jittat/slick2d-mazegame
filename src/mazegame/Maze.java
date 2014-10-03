@@ -44,4 +44,12 @@ public class Maze {
       }
     }
   }
+  
+  public int getCellCenterX(int r, int c) {
+    return leftX + c * BLOCK_SIZE + BLOCK_SIZE/2;
+  }
+
+  public int getCellCenterY(int r, int c) {
+    return topY + r * BLOCK_SIZE + BLOCK_SIZE/2;    
+  }
 }
