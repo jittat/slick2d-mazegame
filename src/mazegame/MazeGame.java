@@ -63,6 +63,16 @@ public class MazeGame extends BasicGame {
     }
   }
   
+  @Override
+  public void keyReleased(int key, char c) {
+    if (keyMap.containsKey(key)) {
+      Pacman.Direction keyDirection = keyMap.get(key);
+      if (pacman.getNextDirection() == keyDirection) {
+        pacman.setNextDirection(Pacman.Direction.STILL);
+      }
+    }
+  }
+  
   public static void main(String[] args) {
     try {
       MazeGame game = new MazeGame("Bullet Game");

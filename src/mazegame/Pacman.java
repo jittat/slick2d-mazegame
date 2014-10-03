@@ -1,5 +1,7 @@
 package mazegame;
 
+import mazegame.Pacman.Direction;
+
 public class Pacman {
   public enum Direction {
     LEFT, RIGHT, UP, DOWN, STILL
@@ -68,5 +70,9 @@ public class Pacman {
   
   public void setNextDirection(Direction dir) {
     nextDir = dir;
+  }
+
+  public Direction getNextDirection() {
+    return nextDir;
   }
 }
