@@ -10,6 +10,7 @@ public class MazeGame extends BasicGame {
 
   public static final int GAME_WIDTH = 640;
   public static final int GAME_HEIGHT = 480;
+  private Maze maze;
   
   public MazeGame(String title) {
     super(title);
@@ -17,10 +18,12 @@ public class MazeGame extends BasicGame {
   
   @Override
   public void init(GameContainer container) throws SlickException {
+    maze = new Maze();
   }
 
   @Override
   public void render(GameContainer container, Graphics g) throws SlickException {
+    maze.render();
   }
 
   @Override
