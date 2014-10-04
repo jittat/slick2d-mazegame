@@ -19,6 +19,8 @@ public class Maze {
     "#..............#",
     "################"
   };
+
+  private boolean [][] hasDot;
   
   private Image wallImage = null;
   private int topY;
@@ -28,8 +30,18 @@ public class Maze {
   public Maze() {
     topY = (MazeGame.GAME_HEIGHT - ROWS*BLOCK_SIZE)/2;
     leftX = (MazeGame.GAME_WIDTH - COLS*BLOCK_SIZE)/2;
+    initDotCheckArray();
   }
   
+  private void initDotCheckArray() {
+    hasDot = new boolean[ROWS][COLS];
+    for (int r = 0; r < ROWS; r++) {
+      for (int c = 0; c < COLS; c++) {
+        hasDot[r][c] = (MAP[r].charAt(c) == '.');
+      }
+    }
+  }
+
   public void init() {
     try {
       wallImage = new Image("res/wall.png");
@@ -46,7 +58,7 @@ public class Maze {
         char mchar = MAP[r].charAt(c);
         if (mchar == '#') {
           wallImage.draw(getCellX(r,c), getCellY(r,c)); 
-        } else if (mchar == '.') {
+        } else if (hasDot[r][c]) {
           dotImage.draw(getCellX(r,c), getCellY(r,c));
         }
       }
@@ -74,9 +86,33 @@ public class Maze {
         ((y - topY) % BLOCK_SIZE == BLOCK_SIZE/2);
   }
 
+  public int getRow(int x, int y) {
+    return (y - topY) / BLOCK_SIZE;
+  }
+
+  public int getCol(int x, int y) {
+    return (x - leftX) / BLOCK_SIZE;
+  }
+  
+  public char getMap(int x, int y) {
+    int r = getRow(x, y);
+    int c = getCol(x, y);
+    return MAP[r].charAt(c);
+  }
+  
   public boolean isEmpty(int x, int y) {
-    int r = (y - topY) / BLOCK_SIZE;
-    int c = (x - leftX) / BLOCK_SIZE;
-    return MAP[r].charAt(c) == '.';
+    return getMap(x,y) == '.';
+  }
+
+  public boolean hasDotAt(int x, int y) {
+    int r = getRow(x, y);
+    int c = getCol(x, y);
+    return hasDot[r][c];
+  }
+
+  public void eatDotAt(int x, int y) {
+    int r = getRow(x, y);
+    int c = getCol(x, y);
+    hasDot[r][c] = false;
   }
 }

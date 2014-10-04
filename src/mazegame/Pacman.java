@@ -52,6 +52,9 @@ public class Pacman {
   
   public void update() {
     if (maze.isAtCellCenter(x, y)) {
+      if (maze.hasDotAt(x,y)) {
+        maze.eatDotAt(x,y);
+      }
       if (!directionMovable(nextDir)) {
         nextDir = Direction.STILL;
       }
@@ -60,9 +63,9 @@ public class Pacman {
     updatePosition();
   }
   
-  private boolean directionMovable(Direction nextDir2) {
-    int nextX = x + Maze.BLOCK_SIZE * dirMapX.get(nextDir);
-    int nextY = y + Maze.BLOCK_SIZE * dirMapY.get(nextDir);
+  private boolean directionMovable(Direction dir) {
+    int nextX = x + Maze.BLOCK_SIZE * dirMapX.get(dir);
+    int nextY = y + Maze.BLOCK_SIZE * dirMapY.get(dir);
     return maze.isEmpty(nextX, nextY);
   }
 
