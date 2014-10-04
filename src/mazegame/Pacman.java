@@ -48,11 +48,11 @@ public class Pacman {
     }
   }
 
+  
+  
   public void update() {
     if (maze.isAtCellCenter(x, y)) {
-      int nextX = x + maze.BLOCK_SIZE * dirMapX.get(nextDir);
-      int nextY = y + maze.BLOCK_SIZE * dirMapY.get(nextDir);
-      if (!maze.isEmpty(nextX, nextY)) {
+      if (!directionMovable(nextDir)) {
         nextDir = Direction.STILL;
       }
       dir = nextDir;
@@ -60,6 +60,12 @@ public class Pacman {
     updatePosition();
   }
   
+  private boolean directionMovable(Direction nextDir2) {
+    int nextX = x + Maze.BLOCK_SIZE * dirMapX.get(nextDir);
+    int nextY = y + Maze.BLOCK_SIZE * dirMapY.get(nextDir);
+    return maze.isEmpty(nextX, nextY);
+  }
+
   private void updatePosition() {
     if (dir != Direction.STILL) {
       x += dirMapX.get(dir) * STEP_SIZE;
