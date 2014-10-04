@@ -23,6 +23,7 @@ public class Maze {
   private Image wallImage = null;
   private int topY;
   private int leftX;
+  private Image dotImage;
   
   public Maze() {
     topY = (MazeGame.GAME_HEIGHT - ROWS*BLOCK_SIZE)/2;
@@ -32,22 +33,34 @@ public class Maze {
   public void init() {
     try {
       wallImage = new Image("res/wall.png");
+      dotImage = new Image("res/dot.png");
     } catch (SlickException e) {
       wallImage = null;
+      dotImage = null;
     }
   }
 
   public void render() {
     for (int r = 0; r < ROWS; r++) {
       for (int c = 0; c < COLS; c++) {
-        if (MAP[r].charAt(c) == '#') {
-          wallImage.draw(leftX + (c * BLOCK_SIZE), 
-              topY + (r * BLOCK_SIZE));
+        char mchar = MAP[r].charAt(c);
+        if (mchar == '#') {
+          wallImage.draw(getCellX(r,c), getCellY(r,c)); 
+        } else if (mchar == '.') {
+          dotImage.draw(getCellX(r,c), getCellY(r,c));
         }
       }
     }
   }
+
+  public int getCellX(int r, int c) {
+    return leftX + c * BLOCK_SIZE;
+  }
   
+  public int getCellY(int r, int c) {
+    return topY + r * BLOCK_SIZE;
+  }
+
   public int getCellCenterX(int r, int c) {
     return leftX + c * BLOCK_SIZE + BLOCK_SIZE/2;
   }
