@@ -1,10 +1,12 @@
 package mazegame;
 
+import java.util.HashMap;
+
 import mazegame.Pacman.Direction;
 
 public class Pacman {
   public enum Direction {
-    LEFT, RIGHT, UP, DOWN, STILL
+    STILL, LEFT, RIGHT, UP, DOWN;
   }
   public static final int STEP_SIZE = 5;
   
@@ -13,8 +15,11 @@ public class Pacman {
   private Direction dir;
   private MazeGame game;
   private Maze maze;
-
   private Direction nextDir;
+
+  private HashMap<Direction, Integer> dirMapX;
+
+  private HashMap<Direction, Integer> dirMapY;
 
   Pacman(int x, int y, Direction dir, Maze maze) {
     this.x = x;
@@ -22,29 +27,43 @@ public class Pacman {
     this.dir = dir;
     this.maze = maze;
     nextDir = Direction.STILL;
+    initDirMap();
+  }
+
+  protected void initDirMap() {
+    dirMapX = new HashMap<Direction, Integer>();
+    dirMapY = new HashMap<Direction, Integer>();
+    Direction [] dindex = { 
+        Direction.STILL, 
+        Direction.LEFT,
+        Direction.RIGHT,
+        Direction.UP,
+        Direction.DOWN 
+    };
+    int [] dx = { 0,-1, 1, 0, 0 };
+    int [] dy = { 0, 0, 0, -1, 1 };
+    for (int i = 0; i < dindex.length; i++) {
+      dirMapX.put(dindex[i], dx[i]);
+      dirMapY.put(dindex[i], dy[i]);
+    }
   }
 
   public void update() {
-    if (maze.isAtCellCenter(x,y)) {
+    if (maze.isAtCellCenter(x, y)) {
+      int nextX = x + maze.BLOCK_SIZE * dirMapX.get(nextDir);
+      int nextY = y + maze.BLOCK_SIZE * dirMapY.get(nextDir);
+      if (!maze.isEmpty(nextX, nextY)) {
+        nextDir = Direction.STILL;
+      }
       dir = nextDir;
     }
     updatePosition();
   }
   
   private void updatePosition() {
-    switch (dir) {
-    case LEFT: 
-      x -= STEP_SIZE;
-      break;
-    case RIGHT: 
-      x += STEP_SIZE;
-      break;
-    case UP: 
-      y -= STEP_SIZE;
-      break;
-    case DOWN: 
-      y += STEP_SIZE;
-      break;
+    if (dir != Direction.STILL) {
+      x += dirMapX.get(dir) * STEP_SIZE;
+      y += dirMapY.get(dir) * STEP_SIZE;
     }
   }
 

@@ -60,4 +60,10 @@ public class Maze {
     return ((x - leftX) % BLOCK_SIZE == BLOCK_SIZE/2) &&
         ((y - topY) % BLOCK_SIZE == BLOCK_SIZE/2);
   }
+
+  public boolean isEmpty(int x, int y) {
+    int r = (y - topY) / BLOCK_SIZE;
+    int c = (x - leftX) / BLOCK_SIZE;
+    return MAP[r].charAt(c) == '.';
+  }
 }
