@@ -11,7 +11,8 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
-public class MazeGame extends BasicGame {
+public class MazeGame extends BasicGame 
+    implements ScoreUpdateListener {
 
   public static final int GAME_WIDTH = 640;
   public static final int GAME_HEIGHT = 480;
@@ -45,8 +46,8 @@ public class MazeGame extends BasicGame {
     pacman = new Pacman(maze.getCellCenterX(1, 1),
         maze.getCellCenterY(1, 1),
         Pacman.Direction.STILL,
-        this,
         maze);
+    pacman.addScoreUpdateListener(this);
     pacmanImage = pacman.getRenderable();
   }
 

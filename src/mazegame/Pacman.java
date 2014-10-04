@@ -1,5 +1,6 @@
 package mazegame;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import mazegame.Pacman.Direction;
@@ -13,23 +14,24 @@ public class Pacman {
   private int x;
   private int y;
   private Direction dir;
-  private MazeGame game;
   private Maze maze;
   private Direction nextDir;
 
   private HashMap<Direction, Integer> dirMapX;
-
   private HashMap<Direction, Integer> dirMapY;
 
-  Pacman(int x, int y, Direction dir, MazeGame game, Maze maze) {
+  private ArrayList<ScoreUpdateListener> scoreUpdateListeners;
+  
+  Pacman(int x, int y, Direction dir, Maze maze) {
     this.x = x;
     this.y = y;
     this.dir = dir;
-    this.game = game;
     this.maze = maze;
 
     nextDir = Direction.STILL;
     initDirMap();
+    
+    scoreUpdateListeners = new ArrayList<ScoreUpdateListener>();
   }
 
   protected void initDirMap() {
@@ -49,14 +51,12 @@ public class Pacman {
       dirMapY.put(dindex[i], dy[i]);
     }
   }
-
-  
   
   public void update() {
     if (maze.isAtCellCenter(x, y)) {
       if (maze.hasDotAt(x,y)) {
         maze.eatDotAt(x,y);
-        game.increaseScore();
+        notifyScoreIncrease();
       }
       if (!directionMovable(nextDir)) {
         nextDir = Direction.STILL;
@@ -64,6 +64,12 @@ public class Pacman {
       dir = nextDir;
     }
     updatePosition();
+  }
+
+  protected void notifyScoreIncrease() {
+    for (ScoreUpdateListener listener : scoreUpdateListeners) {
+      listener.increaseScore();
+    }
   }
   
   private boolean directionMovable(Direction dir) {
@@ -105,5 +111,9 @@ public class Pacman {
 
   public Direction getNextDirection() {
     return nextDir;
+  }
+  
+  public void addScoreUpdateListener(ScoreUpdateListener listener) {
+    scoreUpdateListeners.add(listener);
   }
 }
