@@ -21,11 +21,13 @@ public class Pacman {
 
   private HashMap<Direction, Integer> dirMapY;
 
-  Pacman(int x, int y, Direction dir, Maze maze) {
+  Pacman(int x, int y, Direction dir, MazeGame game, Maze maze) {
     this.x = x;
     this.y = y;
     this.dir = dir;
+    this.game = game;
     this.maze = maze;
+
     nextDir = Direction.STILL;
     initDirMap();
   }
@@ -54,6 +56,7 @@ public class Pacman {
     if (maze.isAtCellCenter(x, y)) {
       if (maze.hasDotAt(x,y)) {
         maze.eatDotAt(x,y);
+        game.increaseScore();
       }
       if (!directionMovable(nextDir)) {
         nextDir = Direction.STILL;

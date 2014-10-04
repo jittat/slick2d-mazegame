@@ -19,11 +19,15 @@ public class MazeGame extends BasicGame {
   private Pacman pacman;
   private Renderable pacmanImage;
   private HashMap<Integer, Direction> keyMap;
+  private int score;
   
   
   public MazeGame(String title) {
     super(title);
+    
     initKeyMap();
+    
+    score = 0;
   }
   
   private void initKeyMap() {
@@ -41,6 +45,7 @@ public class MazeGame extends BasicGame {
     pacman = new Pacman(maze.getCellCenterX(1, 1),
         maze.getCellCenterY(1, 1),
         Pacman.Direction.STILL,
+        this,
         maze);
     pacmanImage = pacman.getRenderable();
   }
@@ -49,6 +54,7 @@ public class MazeGame extends BasicGame {
   public void render(GameContainer container, Graphics g) throws SlickException {
     maze.render();
     pacmanImage.render(g);
+    renderScore(g);
   }
 
   @Override
@@ -72,7 +78,15 @@ public class MazeGame extends BasicGame {
       }
     }
   }
+
+  private void renderScore(Graphics g) {
+    g.drawString("" + score, GAME_WIDTH - 50, 0);
+  }
   
+  public void increaseScore() {
+    score += 1;
+  }
+
   public static void main(String[] args) {
     try {
       MazeGame game = new MazeGame("Bullet Game");
@@ -84,5 +98,4 @@ public class MazeGame extends BasicGame {
       e.printStackTrace();
     }
   }
-
 }
