@@ -37,7 +37,7 @@ public class Maze {
     hasDot = new boolean[ROWS][COLS];
     for (int r = 0; r < ROWS; r++) {
       for (int c = 0; c < COLS; c++) {
-        hasDot[r][c] = (MAP[r].charAt(c) == '.');
+        hasDot[r][c] = (mapAt(r,c) == '.');
       }
     }
   }
@@ -55,7 +55,7 @@ public class Maze {
   public void render() {
     for (int r = 0; r < ROWS; r++) {
       for (int c = 0; c < COLS; c++) {
-        char mchar = MAP[r].charAt(c);
+        char mchar = mapAt(r,c);
         if (mchar == '#') {
           wallImage.draw(getCellX(r,c), getCellY(r,c)); 
         } else if (hasDot[r][c]) {
@@ -65,6 +65,10 @@ public class Maze {
     }
   }
 
+  private char mapAt(int r, int c) {
+    return MAP[r].charAt(c);
+  }
+  
   public int getCellX(int r, int c) {
     return leftX + c * BLOCK_SIZE;
   }
@@ -74,11 +78,11 @@ public class Maze {
   }
 
   public int getCellCenterX(int r, int c) {
-    return leftX + c * BLOCK_SIZE + BLOCK_SIZE/2;
+    return getCellX(r,c) + BLOCK_SIZE/2;
   }
 
   public int getCellCenterY(int r, int c) {
-    return topY + r * BLOCK_SIZE + BLOCK_SIZE/2;    
+    return getCellY(r,c) + BLOCK_SIZE/2;    
   }
 
   public boolean isAtCellCenter(int x, int y) {
@@ -97,7 +101,7 @@ public class Maze {
   public char getMap(int x, int y) {
     int r = getRow(x, y);
     int c = getCol(x, y);
-    return MAP[r].charAt(c);
+    return mapAt(r,c);
   }
   
   public boolean isEmpty(int x, int y) {
